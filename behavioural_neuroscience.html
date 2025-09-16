@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Nostalgia Network: How Individual Differences Shape Our Past</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Soft Cognitive -->
+    <!-- Application Structure Plan: The application is structured thematically to guide the user from foundational concepts to specific findings, promoting better understanding than a traditional research paper format. It starts with a general introduction, moves to the neural basis of nostalgia ("The Nostalgic Brain") with an interactive diagram, then dives into the core data in "Individual Differences." This central section is highly interactive, allowing users to filter the results by Age, Personality, and Gender, dynamically updating text and visualizations. This user-driven exploration is designed to make complex data accessible and engaging. The final section, "Key Findings," summarizes the main takeaways. This structure was chosen to transform a static report into an interactive learning tool, enabling users to explore the data in a non-linear, self-directed way. -->
+    <!-- Visualization & Content Choices: 
+        - Report Info: Core Brain Regions -> Goal: Inform/Organize -> Viz: Interactive HTML/CSS Brain Diagram -> Interaction: Click on region to display info -> Justification: More engaging and exploratory than a static labeled diagram. Method: Vanilla JS.
+        - Report Info: Age & Reminiscence Bump -> Goal: Show Change -> Viz: Line Chart -> Interaction: Tooltips on hover -> Justification: Standard and effective for showing distribution over a continuous variable (age). Library: Chart.js.
+        - Report Info: Personality & Nostalgia -> Goal: Compare/Relate -> Viz: Dynamic Bar Chart -> Interaction: Chart updates when user selects a personality trait -> Justification: Provides clear, immediate visual feedback for comparing correlations. Library: Chart.js.
+        - Report Info: Gender & Nostalgic Themes -> Goal: Compare Proportions -> Viz: Side-by-side Donut Charts -> Interaction: Tooltips on hover -> Justification: Excellent for comparing part-to-whole compositions between two groups. Library: Chart.js.
+        - All textual content is dynamically updated alongside charts to provide context and interpretation, ensuring a cohesive experience.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #FDFBF8;
+            color: #38332E;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+        .nav-link {
+            transition: color 0.3s ease, border-bottom-color 0.3s ease;
+        }
+        .brain-region {
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            font-size: 0.75rem;
+            line-height: 1rem;
+            font-weight: 600;
+            position: absolute;
+            border: 2px solid transparent;
+        }
+        .brain-region.active, .brain-region:hover {
+            transform: scale(1.1);
+            border-color: #D5A021;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header class="bg-white/80 backdrop-blur-md sticky top-0 z-50 shadow-sm">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <h1 class="text-xl font-bold text-[#A56E0D]">The Nostalgia Network</h1>
+            <div class="hidden md:flex space-x-8">
+                <a href="#introduction" class="nav-link text-gray-600 hover:text-[#A56E0D] border-b-2 border-transparent hover:border-[#A56E0D]">Introduction</a>
+                <a href="#brain" class="nav-link text-gray-600 hover:text-[#A56E0D] border-b-2 border-transparent hover:border-[#A56E0D]">The Nostalgic Brain</a>
+                <a href="#differences" class="nav-link text-gray-600 hover:text-[#A56E0D] border-b-2 border-transparent hover:border-[#A56E0D]">Individual Differences</a>
+                <a href="#findings" class="nav-link text-gray-600 hover:text-[#A56E0D] border-b-2 border-transparent hover:border-[#A56E0D]">Key Findings</a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container mx-auto px-6 py-12">
+        <section id="introduction" class="text-center mb-24">
+            <h2 class="text-4xl font-bold text-[#A56E0D] mb-4">How Do We Remember the Past?</h2>
+            <p class="max-w-3xl mx-auto text-lg text-gray-700">
+                Nostalgia, the bittersweet emotion of recalling meaningful past events, is a universal human experience. It serves important psychological functions, from improving mood to fostering social connection. This research explores how our unique individual traits—our age, personality, and gender—shape the very way our brains process these cherished memories. This interactive report breaks down the key findings, revealing the diverse neural tapestry of nostalgia.
+            </p>
+        </section>
+
+        <section id="brain" class="mb-24">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold mb-2">The Nostalgic Brain</h2>
+                <p class="max-w-3xl mx-auto text-gray-700">
+                    When we experience nostalgia, a specific network of brain regions activates, connecting memory, emotion, and self-reflection. This section provides an interactive look at the key players in this neural circuit. Click on each highlighted region to learn about its specific role in processing your nostalgic memories.
+                </p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                <div class="relative w-full max-w-lg mx-auto aspect-square">
+                    <div class="absolute inset-0 bg-no-repeat bg-center bg-contain" style="background-image: url('https://placehold.co/600x600/FDFBF8/38332E?text=Brain+Outline'); opacity: 0.1;"></div>
+                    
+                    <div id="hippocampus" data-region="hippocampus" class="brain-region bg-orange-200/50 text-orange-800" style="width: 25%; height: 18%; top: 45%; left: 38%;">Hippocampus</div>
+                    <div id="amygdala" data-region="amygdala" class="brain-region bg-red-200/50 text-red-800" style="width: 15%; height: 12%; top: 52%; left: 28%;">Amygdala</div>
+                    <div id="pfc" data-region="pfc" class="brain-region bg-blue-200/50 text-blue-800" style="width: 35%; height: 25%; top: 15%; left: 55%;">Prefrontal Cortex</div>
+                    <div id="reward" data-region="reward" class="brain-region bg-green-200/50 text-green-800" style="width: 20%; height: 15%; top: 60%; left: 55%;">Reward Circuit</div>
+                </div>
+                <div id="brain-info-panel" class="bg-white p-6 rounded-lg shadow-lg min-h-[250px] flex items-center justify-center">
+                    <p id="brain-info-text" class="text-gray-600 text-center">Click a brain region to see its function.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="differences" class="mb-24">
+            <div class="text-center mb-12">
+                 <h2 class="text-3xl font-bold mb-2">Individual Differences in Nostalgia</h2>
+                 <p class="max-w-3xl mx-auto text-gray-700">While the core neural network for nostalgia is consistent, its activation patterns and the nature of the experience differ significantly from person to person. This section allows you to explore how age, personality, and gender influence our connection to the past. Select a category to see how the data changes.</p>
+            </div>
+            <div class="flex justify-center space-x-2 md:space-x-4 mb-8 bg-amber-100/50 p-2 rounded-full max-w-md mx-auto">
+                <button id="btn-age" class="filter-btn active flex-1 px-4 py-2 rounded-full transition">Age</button>
+                <button id="btn-personality" class="filter-btn flex-1 px-4 py-2 rounded-full transition">Personality</button>
+                <button id="btn-gender" class="filter-btn flex-1 px-4 py-2 rounded-full transition">Gender</button>
+            </div>
+
+            <div id="content-age" class="filter-content">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                    <div class="order-2 md:order-1">
+                        <h3 class="text-2xl font-semibold mb-4 text-[#A56E0D]">The Reminiscence Bump</h3>
+                        <p class="text-gray-700">
+                            Across the lifespan, memories are not recalled equally. We tend to remember a disproportionate number of events from our adolescence and early adulthood (roughly ages 10-30). This phenomenon, known as the "reminiscence bump," is often the source of our most potent nostalgic memories, as it's a period of identity formation and significant life firsts. Older adults show heightened hippocampal activity when recalling these memories, suggesting a deeper, more consolidated encoding of these formative experiences.
+                        </p>
+                    </div>
+                     <div class="order-1 md:order-2 chart-container">
+                        <canvas id="ageChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div id="content-personality" class="filter-content hidden">
+                 <div class="text-center mb-8">
+                     <p class="text-gray-700 mb-4">The Big Five personality traits influence the emotional flavor of our nostalgia. Select a trait to see its correlation with nostalgia-related brain activity.</p>
+                     <div class="flex flex-wrap justify-center gap-2">
+                        <button class="trait-btn active px-4 py-2 bg-blue-100 text-blue-800 rounded-full text-sm" data-trait="openness">Openness</button>
+                        <button class="trait-btn px-4 py-2 bg-gray-100 text-gray-800 rounded-full text-sm" data-trait="conscientiousness">Conscientiousness</button>
+                        <button class="trait-btn px-4 py-2 bg-green-100 text-green-800 rounded-full text-sm" data-trait="extraversion">Extraversion</button>
+                        <button class="trait-btn px-4 py-2 bg-amber-100 text-amber-800 rounded-full text-sm" data-trait="agreeableness">Agreeableness</button>
+                        <button class="trait-btn px-4 py-2 bg-red-100 text-red-800 rounded-full text-sm" data-trait="neuroticism">Neuroticism</button>
+                     </div>
+                 </div>
+                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                    <div class="order-2 md:order-1">
+                        <h3 id="personality-title" class="text-2xl font-semibold mb-4 text-[#A56E0D]"></h3>
+                        <p id="personality-text" class="text-gray-700"></p>
+                    </div>
+                    <div class="order-1 md:order-2 chart-container">
+                        <canvas id="personalityChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div id="content-gender" class="filter-content hidden">
+                <div class="text-center mb-8">
+                    <h3 class="text-2xl font-semibold mb-2 text-[#A56E0D]">Thematic Content of Nostalgic Memories</h3>
+                    <p class="text-gray-700 max-w-2xl mx-auto">While the intensity of nostalgia is similar across genders, research suggests subtle differences in the content. Men's nostalgic memories more often center on agentic themes (personal achievements, overcoming challenges), while women's memories tend to focus more on relational themes (social bonds, family moments).</p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="chart-container">
+                        <h4 class="text-center font-semibold mb-2">Female Participants</h4>
+                        <canvas id="genderChartFemale"></canvas>
+                    </div>
+                    <div class="chart-container">
+                         <h4 class="text-center font-semibold mb-2">Male Participants</h4>
+                        <canvas id="genderChartMale"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="findings" class="bg-amber-50/50 rounded-lg p-8 md:p-12">
+            <div class="text-center mb-8">
+                <h2 class="text-3xl font-bold">Key Findings & Conclusion</h2>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+                <div class="bg-white p-6 rounded-lg shadow">
+                    <h3 class="font-semibold text-lg text-[#A56E0D] mb-2">Brain Network is Universal</h3>
+                    <p class="text-sm text-gray-600">The core network for nostalgia—linking memory, emotion, and reward circuits—is largely consistent across all individuals.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow">
+                    <h3 class="font-semibold text-lg text-[#A56E0D] mb-2">Personality Colors the Past</h3>
+                    <p class="text-sm text-gray-600">Traits like neuroticism are linked to more bittersweet nostalgia with higher amygdala (emotion) activity, while extraversion correlates with positive social memories and stronger reward circuit activation.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow">
+                     <h3 class="font-semibold text-lg text-[#A56E0D] mb-2">Life Stage Matters</h3>
+                    <p class="text-sm text-gray-600">Age significantly impacts nostalgia, with memories from the "reminiscence bump" (ages 10-30) being particularly vivid and neurally pronounced, especially in older adults.</p>
+                </div>
+            </div>
+            <div class="mt-8 text-center">
+                <p class="max-w-3xl mx-auto text-gray-700">In conclusion, while we all experience nostalgia, the way we do so is as unique as our own life stories. These individual differences create a rich and varied internal landscape of memory, demonstrating that our past is not a static record but a dynamic, personal experience constantly being reshaped by who we are today.</p>
+            </div>
+        </section>
+
+    </main>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const data = {
+        brain: {
+            hippocampus: {
+                title: "Hippocampus: The Memory Index",
+                text: "Crucial for forming, organizing, and retrieving autobiographical memories. During nostalgia, it's highly active, working to reconstruct the 'what, where, and when' of a past event."
+            },
+            amygdala: {
+                title: "Amygdala: The Emotional Core",
+                text: "This region processes emotions. Its activation during nostalgia attaches emotional significance—joy, comfort, or a touch of sadness—to the retrieved memory."
+            },
+            pfc: {
+                title: "Prefrontal Cortex: The Evaluator",
+                text: "The brain's executive control center helps place the memory in the context of our life story, evaluating its meaning and integrating it with our sense of self."
+            },
+            reward: {
+                title: "Reward Circuit (Ventral Striatum)",
+                text: "Associated with pleasure and reward. Its activation explains the warm, comforting, and positive feelings often produced by nostalgia, reinforcing the behavior of reminiscence."
+            }
+        },
+        personality: {
+            openness: {
+                title: "Openness to Experience",
+                text: "Individuals high in openness tend to experience nostalgia more frequently. Their imaginative and curious nature may lead them to engage more deeply with past memories, showing balanced activation across the nostalgia network.",
+                correlations: { 'Hippocampus': 0.3, 'Amygdala': 0.2, 'PFC': 0.4, 'Reward': 0.35 }
+            },
+            conscientiousness: {
+                title: "Conscientiousness",
+                text: "This trait shows a weaker link to nostalgia. Conscientious individuals might recall memories related to personal goals and achievements, with slightly higher PFC activation related to structured self-reflection.",
+                 correlations: { 'Hippocampus': 0.1, 'Amygdala': 0.05, 'PFC': 0.2, 'Reward': 0.1 }
+            },
+            extraversion: {
+                title: "Extraversion",
+                text: "Strongly correlated with positive, social nostalgia. Extraverts show significantly higher activation in the reward circuits, reflecting the pleasurable feeling they derive from recalling social gatherings and relationships.",
+                 correlations: { 'Hippocampus': 0.4, 'Amygdala': 0.25, 'PFC': 0.3, 'Reward': 0.6 }
+            },
+            agreeableness: {
+                title: "Agreeableness",
+                text: "Agreeable individuals often recall prosocial memories focused on connection and harmony. Their brain activation patterns reflect a positive emotional tone, similar to extraverts but with a focus on relational contentment.",
+                 correlations: { 'Hippocampus': 0.35, 'Amygdala': 0.15, 'PFC': 0.25, 'Reward': 0.4 }
+            },
+            neuroticism: {
+                title: "Neuroticism",
+                text: "Associated with a more bittersweet or even negative form of nostalgia. Individuals high in neuroticism show heightened co-activation of the amygdala (emotion) and hippocampus, suggesting that their memories are more emotionally intense and sometimes tinged with anxiety or regret.",
+                 correlations: { 'Hippocampus': 0.5, 'Amygdala': 0.7, 'PFC': 0.3, 'Reward': 0.15 }
+            }
+        }
+    };
+
+    let ageChart, personalityChart, genderChartFemale, genderChartMale;
+
+    const brainRegions = document.querySelectorAll('.brain-region');
+    const brainInfoPanel = document.getElementById('brain-info-panel');
+    const brainInfoText = document.getElementById('brain-info-text');
+
+    brainRegions.forEach(region => {
+        region.addEventListener('click', () => {
+            brainRegions.forEach(r => r.classList.remove('active'));
+            region.classList.add('active');
+            const regionKey = region.dataset.region;
+            const regionData = data.brain[regionKey];
+            brainInfoPanel.innerHTML = `<div class="p-4"><h4 class="font-bold text-lg text-center mb-2 text-[#A56E0D]">${regionData.title}</h4><p class="text-gray-700 text-sm text-center">${regionData.text}</p></div>`;
+        });
+    });
+
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    const filterContents = document.querySelectorAll('.filter-content');
+
+    filterBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            filterBtns.forEach(b => b.classList.remove('active', 'bg-[#A56E0D]', 'text-white'));
+            btn.classList.add('active', 'bg-[#A56E0D]', 'text-white');
+            
+            const contentId = `content-${btn.id.split('-')[1]}`;
+            filterContents.forEach(content => {
+                if (content.id === contentId) {
+                    content.classList.remove('hidden');
+                } else {
+                    content.classList.add('hidden');
+                }
+            });
+        });
+    });
+    
+    function setInitialActiveButtonStyles() {
+        const activeBtn = document.querySelector('.filter-btn.active');
+        if (activeBtn) {
+            activeBtn.classList.add('bg-[#A56E0D]', 'text-white');
+        }
+    }
+
+    function createAgeChart() {
+        const ctx = document.getElementById('ageChart').getContext('2d');
+        if (ageChart) ageChart.destroy();
+        ageChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['0-10', '10-20', '20-30', '30-40', '40-50', '50-60', '60-70'],
+                datasets: [{
+                    label: 'Memory Recall Frequency',
+                    data: [15, 45, 40, 20, 25, 30, 35],
+                    borderColor: '#D5A021',
+                    backgroundColor: 'rgba(213, 160, 33, 0.1)',
+                    fill: true,
+                    tension: 0.4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        callbacks: {
+                            title: (context) => `Age Range: ${context[0].label} yrs`
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: { display: true, text: 'Relative Recall Count' }
+                    }
+                }
+            }
+        });
+    }
+    
+    const personalityTraitBtns = document.querySelectorAll('.trait-btn');
+    const personalityTitle = document.getElementById('personality-title');
+    const personalityText = document.getElementById('personality-text');
+
+    function updatePersonalityContent(traitKey) {
+        const traitData = data.personality[traitKey];
+        personalityTitle.textContent = traitData.title;
+        personalityText.textContent = traitData.text;
+
+        personalityTraitBtns.forEach(btn => {
+            btn.classList.remove('active');
+            if (btn.dataset.trait === traitKey) {
+                btn.classList.add('active');
+            }
+        });
+        createPersonalityChart(traitKey);
+    }
+    
+    personalityTraitBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            updatePersonalityContent(btn.dataset.trait);
+        });
+    });
+
+    function createPersonalityChart(traitKey) {
+        const ctx = document.getElementById('personalityChart').getContext('2d');
+        const correlations = data.personality[traitKey].correlations;
+        if (personalityChart) personalityChart.destroy();
+        personalityChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: Object.keys(correlations),
+                datasets: [{
+                    label: 'Correlation with Brain Activity',
+                    data: Object.values(correlations),
+                    backgroundColor: [
+                        'rgba(251, 146, 60, 0.6)', 
+                        'rgba(239, 68, 68, 0.6)', 
+                        'rgba(59, 130, 246, 0.6)', 
+                        'rgba(34, 197, 94, 0.6)'
+                    ],
+                    borderColor: [
+                        'rgba(251, 146, 60, 1)', 
+                        'rgba(239, 68, 68, 1)', 
+                        'rgba(59, 130, 246, 1)', 
+                        'rgba(34, 197, 94, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                indexAxis: 'y',
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                     title: { display: true, text: `Correlation for ${data.personality[traitKey].title}` }
+                },
+                 scales: {
+                    x: {
+                        beginAtZero: true,
+                        title: { display: true, text: 'Correlation Coefficient' }
+                    }
+                }
+            }
+        });
+    }
+
+    function createGenderCharts() {
+        const femaleCtx = document.getElementById('genderChartFemale').getContext('2d');
+        const maleCtx = document.getElementById('genderChartMale').getContext('2d');
+
+        const options = {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { position: 'bottom' },
+                tooltip: {
+                    callbacks: {
+                        label: function (context) {
+                            let label = context.label || '';
+                            if (label) {
+                                label += ': ';
+                            }
+                            if (context.parsed !== null) {
+                                label += context.parsed + '%';
+                            }
+                            return label;
+                        }
+                    }
+                }
+            }
+        };
+
+        if(genderChartFemale) genderChartFemale.destroy();
+        genderChartFemale = new Chart(femaleCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Relational Themes', 'Agentic Themes'],
+                datasets: [{
+                    data: [72, 28],
+                    backgroundColor: ['#D97706', '#6B7280'],
+                    hoverOffset: 4
+                }]
+            },
+            options: options
+        });
+        
+        if(genderChartMale) genderChartMale.destroy();
+        genderChartMale = new Chart(maleCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Relational Themes', 'Agentic Themes'],
+                datasets: [{
+                    data: [45, 55],
+                    backgroundColor: ['#D97706', '#6B7280'],
+                    hoverOffset: 4
+                }]
+            },
+            options: options
+        });
+    }
+
+    function init() {
+        setInitialActiveButtonStyles();
+        createAgeChart();
+        updatePersonalityContent('openness');
+        createGenderCharts();
+
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    }
+
+    init();
+});
+</script>
+
+</body>
+</html>

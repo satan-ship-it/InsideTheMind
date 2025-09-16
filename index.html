@@ -33,18 +33,42 @@
             margin-right: auto;
             height: 300px;
             max-height: 400px;
+            transition: all 0.3s ease;
         }
+        
+        .chart-container:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        
         @media (min-width: 768px) {
             .chart-container {
                 height: 350px;
             }
         }
         .nav-link {
-            transition: color 0.3s ease, border-bottom-color 0.3s ease;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -2px;
+            left: 50%;
+            background-color: #A56E0D;
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+        
+        .nav-link:hover::after {
+            width: 100%;
         }
         .brain-region {
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -57,34 +81,372 @@
             border: 2px solid transparent;
         }
         .brain-region.active, .brain-region:hover {
-            transform: scale(1.1);
+            transform: scale(1.2);
             border-color: #D5A021;
+            box-shadow: 0 8px 25px rgba(213, 160, 33, 0.3);
+        }
+        
+        /* Hamburger Menu Styles */
+        .hamburger {
+            display: flex;
+            flex-direction: column;
+            cursor: pointer;
+            padding: 4px;
+            z-index: 60;
+        }
+        
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background-color: #A56E0D;
+            margin: 3px 0;
+            transition: 0.3s;
+            border-radius: 2px;
+        }
+        
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(-45deg) translate(-5px, 6px);
+        }
+        
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+        
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(45deg) translate(-5px, -6px);
+        }
+        
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: -300px;
+            width: 300px;
+            height: 100vh;
+            background: linear-gradient(135deg, #FDFBF8 0%, #F8F5F0 100%);
+            backdrop-filter: blur(10px);
+            box-shadow: 2px 0 20px rgba(0,0,0,0.1);
+            transition: left 0.3s ease;
+            z-index: 55;
+            overflow-y: auto;
+        }
+        
+        .sidebar.open {
+            left: 0;
+        }
+        
+        .sidebar-content {
+            padding: 80px 20px 20px;
+        }
+        
+        .sidebar-nav a {
+            display: block;
+            padding: 12px 20px;
+            color: #38332E;
+            text-decoration: none;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+        
+        .sidebar-nav a:hover {
+            background-color: #A56E0D;
+            color: white;
+            transform: translateX(5px);
+        }
+        
+        .sidebar-section {
+            margin-bottom: 30px;
+        }
+        
+        .sidebar-section h3 {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: #A56E0D;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 15px;
+            padding-left: 20px;
+        }
+        
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 50;
+        }
+        
+        .overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        /* Animation utilities */
+        .fade-in {
+            animation: fadeIn 0.6s ease-out;
+        }
+        
+        .slide-up {
+            animation: slideUp 0.8s ease-out;
+        }
+        
+        .scale-in {
+            animation: scaleIn 0.5s ease-out;
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes scaleIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+        
+        /* Scroll animations */
+        .scroll-reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+        }
+        
+        /* Enhanced button animations */
+        .filter-btn, .trait-btn {
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .filter-btn::before, .trait-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+        
+        .filter-btn:hover::before, .trait-btn:hover::before {
+            left: 100%;
+        }
+        
+        .filter-btn:hover, .trait-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        /* Enhanced card animations */
+        .enhanced-card {
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .enhanced-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(165, 110, 13, 0.1), rgba(213, 160, 33, 0.1));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .enhanced-card:hover::before {
+            opacity: 1;
+        }
+        
+        .enhanced-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+        
+        /* Parallax effect */
+        .parallax-section {
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+        
+        /* Smooth scroll progress indicator */
+        .scroll-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 3px;
+            background: linear-gradient(90deg, #A56E0D, #D5A021);
+            z-index: 100;
+            transition: width 0.1s ease;
+        }
+        
+        /* Scroll animations revealed state */
+        .scroll-reveal.revealed {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* Mobile navigation improvements */
+        @media (max-width: 768px) {
+            .nav-link {
+                display: none;
+            }
+            
+            .hamburger {
+                display: flex;
+            }
+            
+            .sidebar {
+                width: 280px;
+                left: -280px;
+            }
+            
+            .sidebar-nav a {
+                padding: 16px 20px;
+                font-size: 1.1rem;
+            }
+        }
+        
+        @media (min-width: 769px) {
+            .hamburger {
+                display: flex;
+            }
+            
+            .sidebar {
+                width: 300px;
+            }
+        }
+        
+        /* Improved responsive typography */
+        @media (max-width: 640px) {
+            .text-4xl {
+                font-size: 2.5rem;
+            }
+            
+            .text-3xl {
+                font-size: 2rem;
+            }
+            
+            .text-6xl {
+                font-size: 3.5rem;
+            }
+        }
+        
+        /* Touch-friendly interactive elements */
+        @media (hover: none) and (pointer: coarse) {
+            .brain-region {
+                padding: 12px;
+                min-width: 60px;
+                min-height: 60px;
+            }
+            
+            .filter-btn, .trait-btn {
+                padding: 14px 20px;
+                min-height: 44px;
+            }
+            
+            .enhanced-card {
+                transition: none;
+            }
+            
+            .enhanced-card:active {
+                transform: scale(0.98);
+            }
         }
     </style>
 </head>
 <body class="antialiased">
+    <!-- Scroll Progress Indicator -->
+    <div class="scroll-progress" id="scroll-progress"></div>
 
     <header class="bg-white/80 backdrop-blur-md sticky top-0 z-50 shadow-sm">
         <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
-            <h1 class="text-xl font-bold text-[#A56E0D]">The Nostalgia Network</h1>
+            <div class="flex items-center">
+                <div class="hamburger mr-4" id="hamburger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+                <h1 class="text-xl font-bold text-[#A56E0D]">The Nostalgia Network</h1>
+            </div>
             <div class="hidden md:flex space-x-8">
-                <a href="#introduction" class="nav-link text-gray-600 hover:text-[#A56E0D] border-b-2 border-transparent hover:border-[#A56E0D]">Introduction</a>
-                <a href="#brain" class="nav-link text-gray-600 hover:text-[#A56E0D] border-b-2 border-transparent hover:border-[#A56E0D]">The Nostalgic Brain</a>
-                <a href="#differences" class="nav-link text-gray-600 hover:text-[#A56E0D] border-b-2 border-transparent hover:border-[#A56E0D]">Individual Differences</a>
-                <a href="#findings" class="nav-link text-gray-600 hover:text-[#A56E0D] border-b-2 border-transparent hover:border-[#A56E0D]">Key Findings</a>
+                <a href="#introduction" class="nav-link text-gray-600 hover:text-[#A56E0D]">Introduction</a>
+                <a href="#brain" class="nav-link text-gray-600 hover:text-[#A56E0D]">The Nostalgic Brain</a>
+                <a href="#differences" class="nav-link text-gray-600 hover:text-[#A56E0D]">Individual Differences</a>
+                <a href="#findings" class="nav-link text-gray-600 hover:text-[#A56E0D]">Key Findings</a>
             </div>
         </nav>
     </header>
 
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-content">
+            <div class="sidebar-section">
+                <h3>Navigation</h3>
+                <nav class="sidebar-nav">
+                    <a href="#introduction">Introduction</a>
+                    <a href="#brain">The Nostalgic Brain</a>
+                    <a href="#differences">Individual Differences</a>
+                    <a href="#findings">Key Findings</a>
+                </nav>
+            </div>
+            <div class="sidebar-section">
+                <h3>Pages</h3>
+                <nav class="sidebar-nav">
+                    <a href="page1.html">Hello World Page 1</a>
+                    <a href="page2.html">Hello World Page 2</a>
+                </nav>
+            </div>
+        </div>
+    </div>
+
+    <!-- Overlay -->
+    <div class="overlay" id="overlay"></div>
+
     <main class="container mx-auto px-6 py-12">
-        <section id="introduction" class="text-center mb-24">
+        <section id="introduction" class="text-center mb-24 fade-in">
             <h2 class="text-4xl font-bold text-[#A56E0D] mb-4">How Do We Remember the Past?</h2>
             <p class="max-w-3xl mx-auto text-lg text-gray-700">
                 Nostalgia, the bittersweet emotion of recalling meaningful past events, is a universal human experience. It serves important psychological functions, from improving mood to fostering social connection. This research explores how our unique individual traits—our age, personality, and gender—shape the very way our brains process these cherished memories. This interactive report breaks down the key findings, revealing the diverse neural tapestry of nostalgia.
             </p>
         </section>
 
-        <section id="brain" class="mb-24">
+        <section id="brain" class="mb-24 slide-up">
             <div class="text-center mb-12">
                 <h2 class="text-3xl font-bold mb-2">The Nostalgic Brain</h2>
                 <p class="max-w-3xl mx-auto text-gray-700">
@@ -106,7 +468,7 @@
             </div>
         </section>
 
-        <section id="differences" class="mb-24">
+        <section id="differences" class="mb-24 scale-in">
             <div class="text-center mb-12">
                  <h2 class="text-3xl font-bold mb-2">Individual Differences in Nostalgia</h2>
                  <p class="max-w-3xl mx-auto text-gray-700">While the core neural network for nostalgia is consistent, its activation patterns and the nature of the experience differ significantly from person to person. This section allows you to explore how age, personality, and gender influence our connection to the past. Select a category to see how the data changes.</p>
@@ -171,20 +533,20 @@
             </div>
         </section>
         
-        <section id="findings" class="bg-amber-50/50 rounded-lg p-8 md:p-12">
+        <section id="findings" class="bg-amber-50/50 rounded-lg p-8 md:p-12 fade-in">
             <div class="text-center mb-8">
                 <h2 class="text-3xl font-bold">Key Findings & Conclusion</h2>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
-                <div class="bg-white p-6 rounded-lg shadow">
+                <div class="enhanced-card bg-white p-6 rounded-lg shadow">
                     <h3 class="font-semibold text-lg text-[#A56E0D] mb-2">Brain Network is Universal</h3>
                     <p class="text-sm text-gray-600">The core network for nostalgia—linking memory, emotion, and reward circuits—is largely consistent across all individuals.</p>
                 </div>
-                <div class="bg-white p-6 rounded-lg shadow">
+                <div class="enhanced-card bg-white p-6 rounded-lg shadow">
                     <h3 class="font-semibold text-lg text-[#A56E0D] mb-2">Personality Colors the Past</h3>
                     <p class="text-sm text-gray-600">Traits like neuroticism are linked to more bittersweet nostalgia with higher amygdala (emotion) activity, while extraversion correlates with positive social memories and stronger reward circuit activation.</p>
                 </div>
-                <div class="bg-white p-6 rounded-lg shadow">
+                <div class="enhanced-card bg-white p-6 rounded-lg shadow">
                      <h3 class="font-semibold text-lg text-[#A56E0D] mb-2">Life Stage Matters</h3>
                     <p class="text-sm text-gray-600">Age significantly impacts nostalgia, with memories from the "reminiscence bump" (ages 10-30) being particularly vivid and neurally pronounced, especially in older adults.</p>
                 </div>
@@ -198,6 +560,112 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function () {
+    // Hamburger menu functionality
+    const hamburger = document.getElementById('hamburger');
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('overlay');
+
+    function toggleSidebar() {
+        hamburger.classList.toggle('active');
+        sidebar.classList.toggle('open');
+        overlay.classList.toggle('active');
+        document.body.style.overflow = sidebar.classList.contains('open') ? 'hidden' : '';
+    }
+
+    hamburger.addEventListener('click', toggleSidebar);
+    overlay.addEventListener('click', toggleSidebar);
+
+    // Close sidebar when clicking on navigation links
+    const sidebarLinks = document.querySelectorAll('.sidebar-nav a');
+    sidebarLinks.forEach(link => {
+        link.addEventListener('click', () => {
+            if (link.getAttribute('href').startsWith('#')) {
+                toggleSidebar();
+            }
+        });
+    });
+
+    // Close sidebar on escape key
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && sidebar.classList.contains('open')) {
+            toggleSidebar();
+        }
+    });
+
+    // Handle window resize
+    window.addEventListener('resize', () => {
+        if (window.innerWidth > 768 && sidebar.classList.contains('open')) {
+            // Don't auto-close on larger screens, keep hamburger menu functional
+        }
+    });
+
+    // Smooth scrolling for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                const headerOffset = 80;
+                const elementPosition = target.offsetTop;
+                const offsetPosition = elementPosition - headerOffset;
+
+                window.scrollTo({
+                    top: offsetPosition,
+                    behavior: 'smooth'
+                });
+            }
+        });
+    });
+
+    // Scroll progress indicator
+    const scrollProgress = document.getElementById('scroll-progress');
+    function updateScrollProgress() {
+        const scrollTop = window.pageYOffset;
+        const docHeight = document.body.offsetHeight - window.innerHeight;
+        const scrollPercent = (scrollTop / docHeight) * 100;
+        scrollProgress.style.width = scrollPercent + '%';
+    }
+
+    window.addEventListener('scroll', updateScrollProgress);
+
+    // Enhanced scroll animations with stagger effect
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('revealed');
+                
+                // Add stagger effect to child elements
+                const childElements = entry.target.querySelectorAll('.enhanced-card, .brain-region, .chart-container');
+                childElements.forEach((child, index) => {
+                    setTimeout(() => {
+                        child.style.opacity = '1';
+                        child.style.transform = 'translateY(0)';
+                    }, index * 100);
+                });
+            }
+        });
+    }, observerOptions);
+
+    // Add scroll reveal to sections
+    const sections = document.querySelectorAll('section');
+    sections.forEach(section => {
+        section.classList.add('scroll-reveal');
+        observer.observe(section);
+    });
+
+    // Initialize child elements for stagger animation
+    const enhancedCards = document.querySelectorAll('.enhanced-card');
+    enhancedCards.forEach(card => {
+        card.style.opacity = '0';
+        card.style.transform = 'translateY(20px)';
+        card.style.transition = 'all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+    });
+
     const data = {
         brain: {
             hippocampus: {
@@ -453,15 +921,6 @@ document.addEventListener('DOMContentLoaded', function () {
         createAgeChart();
         updatePersonalityContent('openness');
         createGenderCharts();
-
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                document.querySelector(this.getAttribute('href')).scrollIntoView({
-                    behavior: 'smooth'
-                });
-            });
-        });
     }
 
     init();

@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hello World Page 1 - The Nostalgia Network</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #FDFBF8;
+            color: #38332E;
+        }
+        
+        /* Hamburger Menu Styles */
+        .hamburger {
+            display: flex;
+            flex-direction: column;
+            cursor: pointer;
+            padding: 4px;
+            z-index: 60;
+        }
+        
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background-color: #A56E0D;
+            margin: 3px 0;
+            transition: 0.3s;
+            border-radius: 2px;
+        }
+        
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(-45deg) translate(-5px, 6px);
+        }
+        
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+        
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(45deg) translate(-5px, -6px);
+        }
+        
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: -300px;
+            width: 300px;
+            height: 100vh;
+            background: linear-gradient(135deg, #FDFBF8 0%, #F8F5F0 100%);
+            backdrop-filter: blur(10px);
+            box-shadow: 2px 0 20px rgba(0,0,0,0.1);
+            transition: left 0.3s ease;
+            z-index: 55;
+            overflow-y: auto;
+        }
+        
+        .sidebar.open {
+            left: 0;
+        }
+        
+        .sidebar-content {
+            padding: 80px 20px 20px;
+        }
+        
+        .sidebar-nav a {
+            display: block;
+            padding: 12px 20px;
+            color: #38332E;
+            text-decoration: none;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+        
+        .sidebar-nav a:hover {
+            background-color: #A56E0D;
+            color: white;
+            transform: translateX(5px);
+        }
+        
+        .sidebar-section {
+            margin-bottom: 30px;
+        }
+        
+        .sidebar-section h3 {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: #A56E0D;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 15px;
+            padding-left: 20px;
+        }
+        
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 50;
+        }
+        
+        .overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .fade-in {
+            animation: fadeIn 1s ease-out;
+        }
+        
+        .bounce-in {
+            animation: bounceIn 1.2s ease-out;
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes bounceIn {
+            0% {
+                opacity: 0;
+                transform: scale(0.3);
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1.05);
+            }
+            70% {
+                transform: scale(0.9);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+        
+        .gradient-text {
+            background: linear-gradient(135deg, #A56E0D, #D5A021);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header class="bg-white/80 backdrop-blur-md sticky top-0 z-50 shadow-sm">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="flex items-center">
+                <div class="hamburger mr-4" id="hamburger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+                <h1 class="text-xl font-bold text-[#A56E0D]">The Nostalgia Network</h1>
+            </div>
+            <div class="hidden md:flex space-x-8">
+                <a href="index.html" class="text-gray-600 hover:text-[#A56E0D] border-b-2 border-transparent hover:border-[#A56E0D] transition-all duration-300">Home</a>
+                <a href="page2.html" class="text-gray-600 hover:text-[#A56E0D] border-b-2 border-transparent hover:border-[#A56E0D] transition-all duration-300">Page 2</a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-content">
+            <div class="sidebar-section">
+                <h3>Main Site</h3>
+                <nav class="sidebar-nav">
+                    <a href="index.html">Home</a>
+                </nav>
+            </div>
+            <div class="sidebar-section">
+                <h3>Pages</h3>
+                <nav class="sidebar-nav">
+                    <a href="page1.html">Hello World Page 1</a>
+                    <a href="page2.html">Hello World Page 2</a>
+                </nav>
+            </div>
+        </div>
+    </div>
+
+    <!-- Overlay -->
+    <div class="overlay" id="overlay"></div>
+
+    <main class="container mx-auto px-6 py-12">
+        <section class="text-center mb-24 fade-in">
+            <h1 class="text-6xl font-bold gradient-text mb-6 bounce-in">Hello World</h1>
+            <h2 class="text-3xl font-semibold text-[#A56E0D] mb-8">Welcome to Page 1</h2>
+            <p class="max-w-3xl mx-auto text-lg text-gray-700 leading-relaxed">
+                This is the first sample page in our navigation system. Here you can explore different sections 
+                and experience the smooth animations and interactive features that make the website come alive.
+            </p>
+        </section>
+
+        <section class="mb-24">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="bg-white p-8 rounded-xl shadow-lg card-hover">
+                    <div class="text-4xl mb-4 text-center">🧠</div>
+                    <h3 class="text-xl font-semibold text-[#A56E0D] mb-4 text-center">Interactive</h3>
+                    <p class="text-gray-600 text-center">Experience dynamic content with smooth transitions and engaging hover effects.</p>
+                </div>
+                
+                <div class="bg-white p-8 rounded-xl shadow-lg card-hover">
+                    <div class="text-4xl mb-4 text-center">✨</div>
+                    <h3 class="text-xl font-semibold text-[#A56E0D] mb-4 text-center">Animated</h3>
+                    <p class="text-gray-600 text-center">Enjoy beautiful animations that bring the content to life with professional polish.</p>
+                </div>
+                
+                <div class="bg-white p-8 rounded-xl shadow-lg card-hover">
+                    <div class="text-4xl mb-4 text-center">📱</div>
+                    <h3 class="text-xl font-semibold text-[#A56E0D] mb-4 text-center">Responsive</h3>
+                    <p class="text-gray-600 text-center">Optimized for all devices with a mobile-first approach and intuitive navigation.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="bg-gradient-to-r from-amber-50 to-orange-50 rounded-2xl p-12 text-center">
+            <h2 class="text-3xl font-bold text-[#A56E0D] mb-6">Explore More</h2>
+            <p class="text-gray-700 mb-8 max-w-2xl mx-auto">
+                Navigate through our site using the hamburger menu or check out the other pages 
+                to see more examples of our interactive design.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="index.html" class="bg-[#A56E0D] text-white px-8 py-3 rounded-full hover:bg-[#8B5A0B] transition-all duration-300 hover:scale-105">
+                    Return Home
+                </a>
+                <a href="page2.html" class="border-2 border-[#A56E0D] text-[#A56E0D] px-8 py-3 rounded-full hover:bg-[#A56E0D] hover:text-white transition-all duration-300 hover:scale-105">
+                    Visit Page 2
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Hamburger menu functionality
+            const hamburger = document.getElementById('hamburger');
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('overlay');
+
+            function toggleSidebar() {
+                hamburger.classList.toggle('active');
+                sidebar.classList.toggle('open');
+                overlay.classList.toggle('active');
+                document.body.style.overflow = sidebar.classList.contains('open') ? 'hidden' : '';
+            }
+
+            hamburger.addEventListener('click', toggleSidebar);
+            overlay.addEventListener('click', toggleSidebar);
+
+            // Close sidebar when clicking on navigation links
+            const sidebarLinks = document.querySelectorAll('.sidebar-nav a');
+            sidebarLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    toggleSidebar();
+                });
+            });
+
+            // Add stagger animation to cards
+            const cards = document.querySelectorAll('.card-hover');
+            cards.forEach((card, index) => {
+                card.style.animationDelay = `${index * 0.2}s`;
+                card.classList.add('fade-in');
+            });
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Psychological Safety & Trust: An Interactive Guide</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Calm Harmony -->
+    <!-- Application Structure Plan: The application is structured into four thematic, interactive sections: 1. Foundations (Core Concepts), 2. Core Models (Interactive Theories), 3. The Ecosystem (Drivers, Barriers & Outcomes), and 4. Practical Application (Tools & Cases). This user-centric flow guides the user from understanding 'what it is' to 'how to use it', which is more intuitive and engaging than the original linear 12-point outline. It prioritizes exploration and discovery of relationships between concepts over static reading. -->
+    <!-- Visualization & Content Choices: Theoretical models are presented as interactive diagrams using HTML/CSS for clarity (Goal: Organize, Method: Interactive HTML diagram). The relationship between drivers and outcomes is shown with a dynamic Chart.js radar chart to visualize connections (Goal: Relationships, Method: Interactive Chart.js chart). Practical advice is delivered through interactive checklists and tabbed case studies for actionable learning (Goal: Inform/Apply, Method: HTML forms/tabs with JS). This approach makes abstract information tangible and actionable. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #FDFBF8;
+            color: #38332E;
+        }
+        .nav-link {
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        .nav-link.active, .nav-link:hover {
+            color: #D97706;
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -4px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #D97706;
+            transition: width 0.3s ease;
+        }
+        .nav-link.active::after, .nav-link:hover::after {
+            width: 100%;
+        }
+        .tab-button.active {
+            background-color: #F59E0B;
+            color: #ffffff;
+        }
+        .model-component {
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+        }
+        .model-component:hover, .model-component.active {
+            transform: scale(1.05);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            border-color: #F59E0B;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header id="header" class="bg-white/80 backdrop-blur-md sticky top-0 z-50 shadow-sm">
+        <nav class="container mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
+            <h1 class="text-xl md:text-2xl font-bold text-amber-700">Psychological Safety & Trust</h1>
+            <div class="hidden md:flex space-x-8 text-gray-600 font-medium">
+                <a href="#foundations" class="nav-link">Foundations</a>
+                <a href="#models" class="nav-link">Core Models</a>
+                <a href="#ecosystem" class="nav-link">Ecosystem</a>
+                <a href="#application" class="nav-link">Application</a>
+            </div>
+            <button id="mobile-menu-button" class="md:hidden p-2 rounded-md text-gray-600 hover:bg-gray-100">
+                <span class="block w-6 h-0.5 bg-current"></span>
+                <span class="block w-6 h-0.5 bg-current mt-1.5"></span>
+                <span class="block w-6 h-0.5 bg-current mt-1.5"></span>
+            </button>
+        </nav>
+        <div id="mobile-menu" class="hidden md:hidden px-4 pb-4">
+            <a href="#foundations" class="block py-2 text-gray-600 hover:text-amber-700">Foundations</a>
+            <a href="#models" class="block py-2 text-gray-600 hover:text-amber-700">Core Models</a>
+            <a href="#ecosystem" class="block py-2 text-gray-600 hover:text-amber-700">Ecosystem</a>
+            <a href="#application" class="block py-2 text-gray-600 hover:text-amber-700">Application</a>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
+
+        <section id="foundations" class="mb-16 scroll-mt-20">
+            <h2 class="text-3xl font-bold text-center mb-4">Foundations of High-Performing Teams</h2>
+            <p class="text-lg text-gray-600 text-center max-w-3xl mx-auto mb-12">
+                This section introduces the core concepts of Psychological Safety and Trust. While related, they are distinct pillars that support team learning, innovation, and performance. Explore their definitions and key characteristics to understand their unique roles.
+            </p>
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="bg-white p-6 rounded-lg shadow-md border border-gray-200">
+                    <h3 class="text-2xl font-semibold mb-3 text-amber-600">Psychological Safety</h3>
+                    <p class="text-gray-700 mb-4">A shared belief held by members of a team that the team is safe for interpersonal risk-taking. It's a climate of <strong class="font-medium">openness</strong> where people feel free to voice ideas, questions, concerns, or mistakes without fear of punishment or humiliation.</p>
+                    <ul class="space-y-2">
+                        <li class="flex items-start"><span class="text-amber-500 mr-2 mt-1">▶</span> Absence of fear of ridicule</li>
+                        <li class="flex items-start"><span class="text-amber-500 mr-2 mt-1">▶</span> Freedom to voice dissenting opinions</li>
+                        <li class="flex items-start"><span class="text-amber-500 mr-2 mt-1">▶</span> Focus on team learning and innovation</li>
+                    </ul>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md border border-gray-200">
+                    <h3 class="text-2xl font-semibold mb-3 text-sky-600">Interpersonal Trust</h3>
+                    <p class="text-gray-700 mb-4">The willingness to be vulnerable to another person based on positive expectations of their intentions or behavior. Trust is built on assessing an individual's qualities and past actions.</p>
+                    <ul class="space-y-2">
+                        <li class="flex items-start"><span class="text-sky-500 mr-2 mt-1">▶</span> <strong class="font-medium">Benevolence:</strong> Believing they have good intentions.</li>
+                        <li class="flex items-start"><span class="text-sky-500 mr-2 mt-1">▶</span> <strong class="font-medium">Integrity:</strong> Adherence to acceptable principles.</li>
+                        <li class="flex items-start"><span class="text-sky-500 mr-2 mt-1">▶</span> <strong class="font-medium">Competence:</strong> Belief in their skills and abilities.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="models" class="mb-16 scroll-mt-20">
+            <h2 class="text-3xl font-bold text-center mb-4">Core Theoretical Models</h2>
+            <p class="text-lg text-gray-600 text-center max-w-3xl mx-auto mb-12">
+                Theories provide a roadmap for understanding how psychological safety and trust function within teams. The models below are simplified and interactive. Click on any component to learn more about its role in building effective team dynamics.
+            </p>
+            <div class="grid lg:grid-cols-2 gap-12 items-start">
+                <div class="w-full">
+                    <h3 class="text-2xl font-semibold text-center mb-4">Lencioni's Five Dysfunctions of a Team</h3>
+                    <div id="lencioni-model" class="flex flex-col items-center">
+                        <div data-info="inattention-info" class="model-component w-full md:w-5/6 bg-red-100 text-red-800 p-3 rounded-lg text-center mb-2 border-2 border-transparent">Inattention to Results</div>
+                        <div data-info="avoidance-info" class="model-component w-full md:w-11/12 bg-orange-100 text-orange-800 p-3 rounded-lg text-center mb-2 border-2 border-transparent">Avoidance of Accountability</div>
+                        <div data-info="lack-info" class="model-component w-full bg-yellow-100 text-yellow-800 p-3 rounded-lg text-center mb-2 border-2 border-transparent">Lack of Commitment</div>
+                        <div data-info="fear-info" class="model-component w-full bg-blue-100 text-blue-800 p-3 rounded-lg text-center mb-2 border-2 border-transparent">Fear of Conflict</div>
+                        <div data-info="absence-info" class="model-component w-full bg-green-100 text-green-800 p-4 rounded-lg text-center font-bold border-2 border-transparent">Absence of Trust</div>
+                    </div>
+                </div>
+                <div id="model-info-panel" class="bg-white p-6 rounded-lg shadow-md border border-gray-200 min-h-[200px]">
+                    <h4 id="model-info-title" class="text-xl font-bold mb-2 text-gray-800">Select a component</h4>
+                    <p id="model-info-text" class="text-gray-600">Click on a part of the pyramid to see its description here. This model shows how a lack of trust is the foundation for other team dysfunctions.</p>
+                </div>
+            </div>
+            <div id="model-descriptions" class="hidden">
+                <div id="absence-info">
+                    <h4>Absence of Trust</h4>
+                    <p>The foundational dysfunction. When team members are not open with one another about their mistakes and weaknesses, it's impossible to build a foundation for trust.</p>
+                </div>
+                <div id="fear-info">
+                    <h4>Fear of Conflict</h4>
+                    <p>Teams that lack trust are incapable of engaging in unfiltered and passionate debate of ideas. Instead, they resort to veiled discussions and guarded comments.</p>
+                </div>
+                <div id="lack-info">
+                    <h4>Lack of Commitment</h4>
+                    <p>Without having aired their opinions in the course of passionate and open debate, team members rarely, if ever, buy in and commit to decisions, though they may feign agreement during meetings.</p>
+                </div>
+                <div id="avoidance-info">
+                    <h4>Avoidance of Accountability</h4>
+                    <p>Without committing to a clear plan of action, even the most focused and driven people often hesitate to call their peers on actions and behaviors that seem counterproductive to the good of the team.</p>
+                </div>
+                <div id="inattention-info">
+                    <h4>Inattention to Results</h4>
+                    <p>Occurs when team members put their individual needs (such as ego, career development, or recognition) or even the needs of their divisions above the collective goals of the team.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="ecosystem" class="mb-16 scroll-mt-20">
+            <h2 class="text-3xl font-bold text-center mb-4">The Ecosystem of Safety & Trust</h2>
+            <p class="text-lg text-gray-600 text-center max-w-3xl mx-auto mb-12">
+                Safety and trust don't exist in a vacuum. They are influenced by specific drivers and barriers, and they lead to tangible outcomes. Use the dropdown below to explore how different leadership styles and team norms impact team performance and well-being.
+            </p>
+            <div class="flex justify-center mb-8">
+                <select id="driver-selector" class="block w-full max-w-xs p-2 border border-gray-300 rounded-md shadow-sm focus:ring-amber-500 focus:border-amber-500">
+                    <option value="all">Overall Impact</option>
+                    <option value="leadership">Inclusive Leadership</option>
+                    <option value="norms">Supportive Team Norms</option>
+                    <option value="communication">Open Communication</option>
+                    <option value="dei">DEI Initiatives</option>
+                    <option value="toxic">Toxic Leadership (Barrier)</option>
+                </select>
+            </div>
+            <div class="bg-white p-4 md:p-6 rounded-lg shadow-md border border-gray-200">
+                <div class="chart-container">
+                    <canvas id="ecosystem-chart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <section id="application" class="scroll-mt-20">
+            <h2 class="text-3xl font-bold text-center mb-4">Practical Application</h2>
+            <p class="text-lg text-gray-600 text-center max-w-3xl mx-auto mb-12">
+                Understanding these concepts is the first step. Applying them is what transforms teams. This section provides actionable strategies, case studies, and tools to help you build and maintain psychological safety and trust in your own context.
+            </p>
+            
+            <div class="mb-8">
+                <div class="flex justify-center border-b border-gray-200">
+                    <button data-tab="strategies" class="tab-button py-2 px-4 font-medium text-gray-600 active">Building Strategies</button>
+                    <button data-tab="cases" class="tab-button py-2 px-4 font-medium text-gray-600">Case Studies</button>
+                    <button data-tab="contexts" class="tab-button py-2 px-4 font-medium text-gray-600">Special Contexts</button>
+                </div>
+            </div>
+
+            <div id="tab-content" class="bg-white p-6 rounded-lg shadow-md border border-gray-200">
+                <div id="strategies-content" class="tab-pane active">
+                    <h3 class="text-2xl font-semibold mb-4">Checklist for Managers & Facilitators</h3>
+                    <div class="space-y-4">
+                        <label class="flex items-center p-3 rounded-md hover:bg-gray-50 transition">
+                            <input type="checkbox" class="h-5 w-5 rounded border-gray-300 text-amber-600 focus:ring-amber-500">
+                            <span class="ml-3 text-gray-700">Practice active listening and show curiosity.</span>
+                        </label>
+                        <label class="flex items-center p-3 rounded-md hover:bg-gray-50 transition">
+                            <input type="checkbox" class="h-5 w-5 rounded border-gray-300 text-amber-600 focus:ring-amber-500">
+                            <span class="ml-3 text-gray-700">Demonstrate vulnerability by admitting mistakes.</span>
+                        </label>
+                        <label class="flex items-center p-3 rounded-md hover:bg-gray-50 transition">
+                            <input type="checkbox" class="h-5 w-5 rounded border-gray-300 text-amber-600 focus:ring-amber-500">
+                            <span class="ml-3 text-gray-700">Appreciate dissent and thank team members for speaking up.</span>
+                        </label>
+                        <label class="flex items-center p-3 rounded-md hover:bg-gray-50 transition">
+                            <input type="checkbox" class="h-5 w-5 rounded border-gray-300 text-amber-600 focus:ring-amber-500">
+                            <span class="ml-3 text-gray-700">Establish clear roles, goals, and team rituals (e.g., check-ins).</span>
+                        </label>
+                         <label class="flex items-center p-3 rounded-md hover:bg-gray-50 transition">
+                            <input type="checkbox" class="h-5 w-5 rounded border-gray-300 text-amber-600 focus:ring-amber-500">
+                            <span class="ml-3 text-gray-700">Handle conflicts constructively, focusing on ideas not people.</span>
+                        </label>
+                    </div>
+                </div>
+                <div id="cases-content" class="tab-pane hidden">
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div>
+                            <h4 class="text-xl font-semibold mb-2 text-green-700">Success: Google's Project Aristotle</h4>
+                            <p class="text-gray-600">Google's extensive research into team effectiveness found that psychological safety was by far the most important dynamic that set successful teams apart. Teams where members felt safe to be vulnerable and take risks consistently outperformed others in innovation and execution.</p>
+                        </div>
+                        <div>
+                            <h4 class="text-xl font-semibold mb-2 text-red-700">Failure: Challenger Disaster</h4>
+                            <p class="text-gray-600">The 1986 space shuttle disaster is a tragic example of a lack of psychological safety. Engineers who had concerns about the O-rings' performance in cold weather did not feel empowered to voice their dissent strongly enough to halt the launch, fearing professional repercussions from a hierarchical and pressure-filled culture.</p>
+                        </div>
+                    </div>
+                </div>
+                <div id="contexts-content" class="tab-pane hidden">
+                     <h3 class="text-2xl font-semibold mb-4">Challenges in Different Environments</h3>
+                    <div class="space-y-4">
+                        <div>
+                            <h4 class="font-semibold text-gray-800">Virtual and Hybrid Teams</h4>
+                            <p class="text-gray-600">Building trust digitally requires more intentional effort. Challenges include lack of non-verbal cues and "water cooler" moments. Leaders must create structured opportunities for connection and be explicit about communication norms.</p>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-gray-800">Cross-Cultural Teams</h4>
+                            <p class="text-gray-600">Cultural dimensions, such as power distance, can significantly impact how safety is perceived. What is considered open feedback in one culture might be seen as disrespectful in another. Awareness and adaptation are key.</p>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-gray-800">High-Stakes Settings (Healthcare, Aviation)</h4>
+                            <p class="text-gray-600">In these environments, error reporting is critical. A culture of psychological safety allows team members to report mistakes without fear of blame, leading to systemic improvements and preventing future failures.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        const navLinks = document.querySelectorAll('.nav-link');
+        const sections = document.querySelectorAll('main section');
+
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.4
+        };
+
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const id = entry.target.getAttribute('id');
+                    navLinks.forEach(link => {
+                        link.classList.remove('active');
+                        if (link.getAttribute('href') === `#${id}`) {
+                            link.classList.add('active');
+                        }
+                    });
+                }
+            });
+        }, observerOptions);
+
+        sections.forEach(section => {
+            observer.observe(section);
+        });
+
+        const modelComponents = document.querySelectorAll('.model-component');
+        const modelInfoTitle = document.getElementById('model-info-title');
+        const modelInfoText = document.getElementById('model-info-text');
+        const modelDescriptions = document.getElementById('model-descriptions');
+
+        modelComponents.forEach(component => {
+            component.addEventListener('click', () => {
+                modelComponents.forEach(c => c.classList.remove('active'));
+                component.classList.add('active');
+                
+                const infoId = component.dataset.info;
+                const infoContent = document.getElementById(infoId);
+                modelInfoTitle.textContent = infoContent.querySelector('h4').textContent;
+                modelInfoText.textContent = infoContent.querySelector('p').textContent;
+            });
+        });
+
+        const tabButtons = document.querySelectorAll('.tab-button');
+        const tabPanes = document.querySelectorAll('.tab-pane');
+
+        tabButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                tabButtons.forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+
+                const tab = button.dataset.tab;
+                tabPanes.forEach(pane => {
+                    pane.classList.add('hidden');
+                    if (pane.id === `${tab}-content`) {
+                        pane.classList.remove('hidden');
+                    }
+                });
+            });
+        });
+
+        const driverSelector = document.getElementById('driver-selector');
+        const ctx = document.getElementById('ecosystem-chart').getContext('2d');
+        let ecosystemChart;
+
+        const chartData = {
+            labels: ['Team Learning', 'Innovation', 'Error Reporting', 'Collaboration', 'Well-being', 'Performance'],
+            datasets: {
+                all: [8, 9, 7, 9, 8, 8],
+                leadership: [9, 8, 8, 9, 7, 8],
+                norms: [8, 7, 7, 9, 8, 7],
+                communication: [9, 8, 9, 9, 7, 7],
+                dei: [7, 8, 6, 8, 9, 7],
+                toxic: [2, 1, 1, 2, 1, 2],
+            }
+        };
+
+        function renderChart(driver = 'all') {
+            const data = chartData.datasets[driver];
+            const isBarrier = driver === 'toxic';
+
+            if (ecosystemChart) {
+                ecosystemChart.destroy();
+            }
+
+            ecosystemChart = new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: chartData.labels,
+                    datasets: [{
+                        label: 'Impact Score',
+                        data: data,
+                        backgroundColor: isBarrier ? 'rgba(239, 68, 68, 0.2)' : 'rgba(245, 158, 11, 0.2)',
+                        borderColor: isBarrier ? 'rgba(239, 68, 68, 1)' : 'rgba(245, 158, 11, 1)',
+                        borderWidth: 2,
+                        pointBackgroundColor: isBarrier ? 'rgba(239, 68, 68, 1)' : 'rgba(245, 158, 11, 1)',
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        r: {
+                            beginAtZero: true,
+                            max: 10,
+                            pointLabels: {
+                                font: {
+                                    size: 12
+                                }
+                            },
+                            ticks: {
+                                stepSize: 2
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    }
+                }
+            });
+        }
+
+        driverSelector.addEventListener('change', (e) => {
+            renderChart(e.target.value);
+        });
+
+        renderChart();
+    });
+</script>
+
+</body>
+</html>
